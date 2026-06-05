@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Beacon Beam Creator</title>
+        <script src="data.js"></script>
+        <script src="script.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="icon" type="image/png" sizes="64x64" href="./imgs/beacon_icon_64x64.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="./imgs/beacon_icon_16x16.png">
+    </head>
+
+    <body>
+        <h1 class="center">Beacon Beam Creator</h1>
+        <div class="center">
+            <p>Find how to create the color you want for a Beacon Beam with stained glass.</p>
+            <ul>
+                <li><b>Beacon to Color</b> mode takes a desired color and attempts to find how to make that color.</li>
+                <li><b>Glass Combination to Color</b> mode takes a list of glass and gives the color made by the beacon.</li>
+                <li><b>Color to Color</b> mode attempts to find the glass needed to go from one color to another color.</li>
+            </ul>
+        </div>
+        <hr>
+
+        <div id="selections">
+            <h2 class="center" style="margin-top:5px;margin-bottom:5px">
+                Settings
+            </h2>
+            <div class="center">Color Mode: 
+                <label for="selectColorMode"></label>
+                <select id="selectColorMode" onchange="updateColorMode(this)">
+                    <option value="java">Java Minecraft</option>
+                    <option value="bedrock">Bedrock Minecraft</option>
+                    <option value="custom">Custom</option>
+                </select>
+                 | Process: 
+                <label for="modes"></label>
+                <select id="modes" onchange="updateMode(this)">
+                    <option value="b->c">Beacon to Color</option>
+                    <option value="g->c">Combination to Color</option>
+                    <option value="c->c">Color to Color</option>
+                </select>
+            </div>
+            <div class="flexCenteredContainer">
+                <div class="flexColumnLeft">
+                    <label for="startColor"><canvas id="startBeacon" style="display: none"></canvas></label>
+                    <canvas height="64" width="64" id="spacingStartBeaconBlank"></canvas>
+                </div>
+                <div class="flexColumnCenter">
+                    <div id="targetColors" class="flexCenteredContainer">
+                        <div id="startingColor" style="display: none" class="flexColumnLeft">
+                            <span>
+                                <label for="startColor">Starting Color: </canvas></label>
+                                <input type="color" id="startColor" name="startColor" onchange="updateStartBeacon()">
+                            </span>
+                        </div>
+                        <div id="targetColumn" class="flexCenteredColumn">
+                            <span>
+                                <label for="targetColor">Target Color: </label>
+                                <input type="color" id="targetColor" name="targetColor" onchange="updateTargetBeacon()">
+                            </span>
+                        </div>
+                    </div>
+                    <div id="glassConnections" class="center" style="display: block">
+                        <label for="glass-limit">Max Glass: <output id="glassLimitValue"></output> blocks</label><br>
+                        <input type="range" id="glass-limit" name="glass-limit" min="1" max="64" step="1" value="32">
+                    </div>
+                </div>
+                <div class="flexColumnRight">
+                    <label for="targetColor"><canvas id="targetBeacon"></canvas></label>
+                </div>
+            </div>
+            <div id="custom-colors" style="display: none">
+                <details open>
+                    <summary class="center" style="padding-bottom: 3px;padding-top:5px">Set Custom Glass Colors</summary>
+                    <div class="centeredCells">
+                        <div class="optionCell">
+                            <input type="checkbox" id="redChecked" name="redChecked" onchange="getColors(false)" checked/>
+                            <label for="redChecked">Red</label>
+                            <input type="color" id="red" name="red" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="orangeChecked" name="orangeChecked" onchange="getColors(false)" checked/>
+                            <label for="orangeChecked">Orange</label>
+                            <input type="color" id="orange" name="orange" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="yellowChecked" name="yellowChecked" onchange="getColors(false)" checked/>
+                            <label for="yellowChecked">Yellow</label>
+                            <input type="color" id="yellow" name="yellow" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="limeChecked" name="limeChecked" onchange="getColors(false)" checked/>
+                            <label for="limeChecked">Lime</label>
+                            <input type="color" id="lime" name="lime" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="greenChecked" name="greenChecked" onchange="getColors(false)" checked/>
+                            <label for="greenChecked">Green</label>
+                            <input type="color" id="green" name="green" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="cyanChecked" name="cyanChecked" onchange="getColors(false)" checked/>
+                            <label for="cyanChecked">Cyan</label>
+                            <input type="color" id="cyan" name="cyan" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="light_blueChecked" name="light_blueChecked" onchange="getColors(false)" checked/>
+                            <label for="light_blueChecked">Light Blue</label>
+                            <input type="color" id="light_blue" name="light_blue" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="blueChecked" name="blueChecked" onchange="getColors(false)" checked/>
+                            <label for="blueChecked">Blue</label>
+                            <input type="color" id="blue" name="blue" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="purpleChecked" name="purpleChecked" onchange="getColors(false)" checked/>
+                            <label for="purpleChecked">Purple</label>
+                            <input type="color" id="purple" name="purple" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="magentaChecked" name="magentaChecked" onchange="getColors(false)" checked/>
+                            <label for="magentaChecked">Magenta</label>
+                            <input type="color" id="magenta" name="magenta" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="pinkChecked" name="pinkChecked" onchange="getColors(false)" checked/>
+                            <label for="pinkChecked">Pink</label>
+                            <input type="color" id="pink" name="pink" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="brownChecked" name="brownChecked" onchange="getColors(false)" checked/>
+                            <label for="brownChecked">Brown</label>
+                            <input type="color" id="brown" name="brown" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="whiteChecked" name="whiteChecked" onchange="getColors(false)" checked/>
+                            <label for="whiteChecked">White</label>
+                            <input type="color" id="white" name="white" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="light_grayChecked" name="light_grayChecked" onchange="getColors(false)" checked/>
+                            <label for="light_grayChecked">Light Gray</label>
+                            <input type="color" id="light_gray" name="light_gray" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="grayChecked" name="grayChecked" onchange="getColors(false)" checked/>
+                            <label for="grayChecked">Gray</label>
+                            <input type="color" id="gray" name="gray" onchange="getColors(false)">
+                        </div>
+                        <div class="optionCell">
+                            <input type="checkbox" id="blackChecked" name="blackChecked" onchange="getColors(false)" checked/>
+                            <label for="blackChecked">Black</label>
+                            <input type="color" id="black" name="black" onchange="getColors(false)">
+                        </div>
+                    </div>
+                </details>
+            </div>
+            <div id="calculateButton" class="center" style="display: block">
+                <button id="find" onclick="findCombination()">Find Combination</button>
+            </div>
+            <hr>
+        </div>
+        </div>
+        <div class="center">
+        <div id="results" class="centeredCells">
+            <div class="optionCell" style="margin-top:0px">
+                <div id="statusBoard" style="background-color: #095e00;margin-top:0px;padding-top:5px;padding-bottom: 5px;margin-left:auto;max-width: fit-content;display:none">
+                    <div id="justColor" class="flexCenteredContainer" style="display: flex;">
+                        <div class="center">
+                            <canvas id="jColor"></canvas>
+                        </div>
+                    </div>
+                    <div id="targetBeaconCompare" class="flexCenteredContainer" style="display: none;">
+                        <p style="writing-mode: sideways-lr;text-align: center"><b><u>Target Color</u></b></p>
+                        <canvas id="tbCompare"></canvas>
+                    </div>
+                    <div id="foundBeaconCompare" class="flexCenteredContainer" style="display: none;">
+                        <p style="writing-mode: sideways-lr;text-align: center"><b><u>Found Color</u></b></p>
+                        <canvas id="fbCompare"></canvas>
+                        <div title="CIE76 Difference Formula Used" style="margin-top: auto;margin-bottom:auto;margin-left:5px">
+                            <option id="fbDelta" style="color:white;writing-mode: sideways-lr;"></option>
+                            <a href="https://en.wikipedia.org/wiki/Color_difference"
+                                style="color:white;writing-mode: sideways-lr;">&#916;E:</a>
+                        </div>
+                    </div>
+                    <div id="cielabBeaconCompare" class="flexCenteredContainer" style="display: none;">
+                        <p style="writing-mode: sideways-lr;text-align: center"><b><u>CIELAB Color</u></b></p>
+                        <canvas id="cbCompare"></canvas>
+                        <div title="CIE76 Difference Formula Used" style="margin-top: auto;margin-bottom:auto;margin-left:5px">
+                            <option id="cbDelta" style="color:white;writing-mode: sideways-lr;"></option>
+                            <a href="https://en.wikipedia.org/wiki/Color_difference"
+                                style="color:white;writing-mode: sideways-lr;">&#916;E:</a>
+                        </div>
+                    </div>
+                    <div id="rgbBeaconCompare" class="flexCenteredContainer" style="display: none;">
+                        <p style="writing-mode: sideways-lr;text-align: center"><b><u>RGB Color</u></b></p>
+                        <canvas id="rbCompare"></canvas>
+                        <div title="CIE76 Difference Formula Used" style="margin-top: auto;margin-bottom:auto;margin-left:5px">
+                            <option id="rbDelta" style="color:white;writing-mode: sideways-lr;"></option>
+                            <a href="https://en.wikipedia.org/wiki/Color_difference"
+                                style="color:white;writing-mode: sideways-lr;">&#916;E:</a>
+                        </div>
+                    </div>
+                    <p style="text-align: center;margin:5px;"><b>Glass Amount Checked: <u><output id="glassAmount"></output></u></b>
+                    </p>
+                    <div id="finalNumberInfo"
+                        style="text-align: center;margin-top:0px;padding-top:3px;padding-bottom:3px;margin-bottom:0px;margin-left:5px;margin-right:5px;">
+                    </div>
+                    <div class="center">
+                        <div id="in-progress" style="background-color: orange;color:black;display: none;">
+                            <h3 style="margin-top:0px;margin-bottom:0px;margin-left:5px;margin-right:5px;">
+                                Calculation in Progress. . .
+                            </h3>
+                            <button onclick="abortFinder()">
+                                Abort Calculations
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="optionCell">
+                <div class="flexCenteredContainer">
+                    <div id="fmBeacon" class="flexCenteredColumn" style="display:flex;margin-top:0px">
+                        <div class="center">
+                            <div id="foundMadeBeacon"></div>
+                            <div class="flexCenteredColumn">
+                                <div id="exactCombo" style="display:block"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="fBeacon" class="flexCenteredColumn" style="display:none;margin-top:0px">
+                        <div class="center">
+                            <div id="foundBeacon"></div>
+                            <p style="margin-left: 5px;margin-right: 5px;margin-top:5px;margin-bottom:0px"><b>Found Beacon</b></p>
+                            <div class="flexCenteredColumn">
+                                <p style="margin-left: 5px;margin-right: 5px;margin-top:0px;margin-bottom:5px;display: flex;" title="CIE76 Difference Formula Used"><a href="https://en.wikipedia.org/wiki/Color_difference" style="color:white">&#916;E:</a> <option id="foundDelta"></option></p>
+                            </div>
+                            <div class="flexCenteredColumn">
+                                <div id="foundCombo" style="display:block"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="cBeacon" class="flexCenteredColumn" style="display:none;margin-top:0px">
+                        <div class="center">
+                            <div id="cielabBeacon"></div>
+                            <p style="margin-left: 5px;margin-right: 5px;margin-top:5px;margin-bottom:0px"><b>CIELAB Beacon</b></p>
+                            <div class="flexCenteredColumn">
+                                <p style="margin-left: 5px;margin-right: 5px;margin-top:0px;margin-bottom:5px;display: flex;" title="CIE76 Difference Formula Used"><a href="https://en.wikipedia.org/wiki/Color_difference" style="color:white">&#916;E:</a> <option id="cielabDelta"></option></p>
+                            </div>
+                            <div class="flexCenteredColumn">
+                                <div id="cielabCombo" style="display:block"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="rBeacon" class="flexCenteredColumn" style="display:none;margin-top:0px">
+                        <div class="center">
+                            <div id="rgbBeacon"></div>
+                            <p style="margin-left: 5px;margin-right: 5px;margin-top:5px;margin-bottom:0px"><b>RGB Beacon</b></p>
+                            <div class="flexCenteredColumn">
+                                <p style="margin-left: 5px;margin-right: 5px;margin-top:0px;margin-bottom:5px;display: flex;" title="CIE76 Difference Formula Used"><a href="https://en.wikipedia.org/wiki/Color_difference" style="color:white">&#916;E:</a> <option id="rgbDelta"></option></p>
+                            </div>
+                            <div class="flexCenteredColumn">
+                                <div id="rgbCombo" style="display:block"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="combinationToColor" class="centeredCells" style="display: none">
+            <div class="optionCell" style="margin-top: 0px;display: flex;align-items: center;">
+                <div id="beaconBuildInfo">
+                    <div id="beaconResults"
+                        style="background-color: #095e00;margin-top:0px;padding-top:5px;margin-bottom:5px; padding-bottom: 5px;margin-left:auto;max-width: 288px">
+                        <p style="text-align: center;margin:5px;"><b>Current Color: <u><output id="beaconColor"></output></u></b>
+                    </div>
+                    <div>
+                        <canvas id="madeBeaconDisplay"></canvas>
+                    </div>
+                    <button id="clearMaker" onclick="clearBeacon()" style="display: none;margin-bottom: 5px;">Clear Beacon</button>
+                    <div id="glassOptions" style="background-color: red;"></div>
+                </div>
+            </div>
+            <div id="madeBeacon" class="optionCell"></div>
+        </div>
+        </div>
+    </body>
+</html>

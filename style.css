@@ -1,0 +1,59 @@
+body{
+    margin:2.5%;
+    background-color: #222;
+    color: white;
+}
+
+.center{
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    justify-content: center;
+}
+
+.flexCenteredContainer{
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+}
+
+.flexCenteredColumn{
+    flex: 50%;
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.flexColumnLeft{
+    flex: 50%;
+    max-width: fit-content;
+    margin-right: 5px;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.flexColumnRight{
+    flex: 50%;
+    max-width: fit-content;
+    margin-right: auto;
+    margin-left: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.centeredCells{
+    text-align: center;
+}
+
+.optionCell{
+    max-width: fit-content;
+    display: inline-block;
+    padding: 5px;
+}
