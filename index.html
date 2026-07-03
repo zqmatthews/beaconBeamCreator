@@ -202,7 +202,8 @@
                                 style="color:white;writing-mode: sideways-lr;">&#916;E:</a>
                         </div>
                     </div>
-                    <p style="text-align: center;margin:5px;"><b>Glass Amount Checked: <u><output id="glassAmount"></output></u></b>
+                    <p id="inprogressLayers" style="text-align: center;margin:5px;display: block;"><b>Checking Glass Amount: <u><output id="glassAmount1"></output></u></b>
+                    <p id="finalLayers" style="text-align: center;margin:5px;display: none;"><b>Glass Amount Checked: <u><output id="glassAmount2"></output></u></b>
                     </p>
                     <div id="finalNumberInfo"
                         style="text-align: center;margin-top:0px;padding-top:3px;padding-bottom:3px;margin-bottom:0px;margin-left:5px;margin-right:5px;">
@@ -210,12 +211,15 @@
                     <div class="center">
                         <div id="in-progress" style="background-color: orange;color:black;display: none;">
                             <h3 style="margin-top:0px;margin-bottom:0px;margin-left:5px;margin-right:5px;">
-                                Calculation in Progress. . .
+                                Calculation in Progress
                             </h3>
                             <button onclick="abortFinder()">
                                 Abort Calculations
                             </button>
                         </div>
+                    </div>
+                    <div class="center">
+                        <p style="text-align: center;margin-top:5px;margin-bottom:0px;margin-left:5px;margin-right:5px;max-width: 170px;">Number of Colors Found: <output id="numOfCols"></output></p>
                     </div>
                 </div>
             </div>
