@@ -403,7 +403,7 @@ function buildOutput(final, foundTarget, targetColor, rgbAndCIELABEqual,
             document.getElementById('finalNumberInfo').style.backgroundColor = "#007d00"
         } else {
             if(document.querySelector('#glass-limit').value == depth){
-                document.getElementById('finalNumberInfo').innerHTML = '<b>Max Glass Reached!</b><br>More Colors Maybe Possible With More Glass';
+                document.getElementById('finalNumberInfo').innerHTML = '<b>Max Glass Reached!</b><br>More Colors May Be Possible With More Glass';
                 document.getElementById('finalNumberInfo').style.backgroundColor = "#c83c00"
             } else {
                 document.getElementById('finalNumberInfo').innerHTML = "<b>All Possible Colors Located, Closest Match Provided</b>";
