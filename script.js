@@ -19,19 +19,19 @@ function createFinder(){
                     event.data.foundColor, event.data.foundColor, 
                     event.data.combination, event.data.combination, 
                     event.data.deltaE, event.data.deltaE, 
-                    event.data.depth);
+                    event.data.depth, event.data.colsFound);
             } else if(event.data.rgbAndCIELABEqual){
                 buildOutput(true, false, event.data.targetColor, true, 
                     event.data.foundColor, event.data.foundColor, 
                     event.data.combination, event.data.combination, 
                     event.data.deltaE, event.data.deltaE, 
-                    event.data.depth);
+                    event.data.depth, event.data.colsFound);
             } else {
                 buildOutput(true, false, event.data.targetColor, false, 
                     event.data.foundColorRGB, event.data.foundColorCIELAB, 
                     event.data.combinationRGB, event.data.combinationCIELAB, 
                     event.data.deltaE_RGB, event.data.deltaE_CIELAB, 
-                    event.data.depth);
+                    event.data.depth, event.data.colsFound);
             }
         }
         if(event.data.status === 'inprogress'){
@@ -40,19 +40,19 @@ function createFinder(){
                     event.data.foundColor, event.data.foundColor, 
                     event.data.combination, event.data.combination, 
                     event.data.deltaE, event.data.deltaE, 
-                    event.data.depth);
+                    event.data.depth, event.data.colsFound);
             } else if(event.data.rgbAndCIELABEqual){
                 buildOutput(false, false, event.data.targetColor, true, 
                     event.data.foundColor, event.data.foundColor, 
                     event.data.combination, event.data.combination, 
                     event.data.deltaE, event.data.deltaE, 
-                    event.data.depth);
+                    event.data.depth, event.data.colsFound);
             } else {
                 buildOutput(false, false, event.data.targetColor, false, 
                     event.data.foundColorRGB, event.data.foundColorCIELAB, 
                     event.data.combinationRGB, event.data.combinationCIELAB, 
                     event.data.deltaE_RGB, event.data.deltaE_CIELAB, 
-                    event.data.depth);
+                    event.data.depth, event.data.colsFound);
             }
         }
         if(event.data.status === 'noglass'){
@@ -383,7 +383,7 @@ function buildOutput(final, foundTarget, targetColor, rgbAndCIELABEqual,
     foundColorRGB, foundColorCIELAB,
     combinationRGB, combinationCIELAB,
     deltaE_RGB, deltaE_CIELAB,
-    depth
+    depth, numOfCol
 ){
     document.getElementById('results').style.display = 'flex';
     document.getElementById('in-progress').style.display = 'block';
@@ -396,15 +396,17 @@ function buildOutput(final, foundTarget, targetColor, rgbAndCIELABEqual,
         document.getElementById('finalNumberInfo').style.display = 'block';
         document.getElementById('finalNumberInfo').style.minWidth = "0px";
         document.getElementById('finalNumberInfo').style.maxWidth = "" + (document.getElementById('rgbBeaconCompare').scrollWidth - 10) + "px";
+        document.getElementById('inprogressLayers').style.display = 'none';
+        document.getElementById('finalLayers').style.display = 'block';
         if(foundTarget){
             document.getElementById('finalNumberInfo').innerHTML = "<b>Exact Color Found!</b>";
             document.getElementById('finalNumberInfo').style.backgroundColor = "#007d00"
         } else {
             if(document.querySelector('#glass-limit').value == depth){
-                document.getElementById('finalNumberInfo').innerHTML = '<b>Max Glass Reached!</b>';
+                document.getElementById('finalNumberInfo').innerHTML = '<b>Max Glass Reached!</b><br><br>More Colors Maybe Be Possible With More Glass';
                 document.getElementById('finalNumberInfo').style.backgroundColor = "#c83c00"
             } else {
-                document.getElementById('finalNumberInfo').innerHTML = "<b>All Possible Colors From Inputs Mapped</b>";
+                document.getElementById('finalNumberInfo').innerHTML = "<b>All Possible Colors Located, Closest Match Provided</b>";
                 document.getElementById('finalNumberInfo').style.backgroundColor = "#007d00"
             }
         }
@@ -516,7 +518,9 @@ function buildOutput(final, foundTarget, targetColor, rgbAndCIELABEqual,
         document.getElementById('rBeacon').style.display = 'flex'
     }
 
-    document.querySelector('#glassAmount').textContent = depth;
+    document.querySelector('#glassAmount1').textContent = depth;
+    document.querySelector('#glassAmount2').textContent = depth;
+    document.querySelector('#numOfCols').textContent = numOfCol.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
     document.getElementById('statusBoard').style.display = 'block';
 }
 
@@ -729,6 +733,8 @@ function findCombination() {
     document.getElementById('selectColorMode').disabled = true;
     document.getElementById('glass-limit').disabled = true;
     document.getElementById('finalNumberInfo').style.display = 'none';
+    document.getElementById('inprogressLayers').style.display = 'block';
+    document.getElementById('finalLayers').style.display = 'none';
 
 
     const inputGlass = getColors(true);
