@@ -9,6 +9,7 @@ let bestFoundComboRGB;
 let bestFoundComboCIELAB;
 let bestDifferenceRGB;
 let bestDifferenceCIELAB;
+let numOfFound = 0;
 let found = [];
 let depth = 0;
 
@@ -24,6 +25,7 @@ onmessage = onmessage = event => {
     this.bestFoundComboCIELAB = undefined;
     this.bestDifferenceRGB = undefined;
     this.bestDifferenceCIELAB = undefined;
+    this.numOfFound = 0;
     this.found = [];
     this.depth = 0;
     if(event.data.process === 'b->c'){
@@ -43,7 +45,8 @@ function postFinalResults(actual){
             foundColor: this.bestFoundRGB,
             combination: this.bestFoundComboRGB,
             deltaE: this.bestDifferenceCIELAB,
-            depth: this.depth
+            depth: this.depth,
+            colsFound: this.numOfFound
         });
     } else if(this.bestFoundRGBDec === this.bestFoundCIELABDec){
         postMessage({
@@ -54,7 +57,8 @@ function postFinalResults(actual){
             foundColor: this.bestFoundRGB,
             combination: this.bestFoundComboRGB,
             deltaE: this.bestDifferenceCIELAB,
-            depth: this.depth
+            depth: this.depth,
+            colsFound: this.numOfFound
         });
     } else {
         postMessage({
@@ -68,7 +72,8 @@ function postFinalResults(actual){
             combinationCIELAB: this.bestFoundComboCIELAB,
             deltaE_RGB: colorDifference(this.bestFoundRGB),
             deltaE_CIELAB: this.bestDifferenceCIELAB,
-            depth: this.depth
+            depth: this.depth,
+            colsFound: this.numOfFound
         });
     }
 
@@ -84,7 +89,8 @@ function postInProgressResults(){
             foundColor: this.bestFoundRGB,
             combination: this.bestFoundComboRGB,
             deltaE: this.bestDifferenceCIELAB,
-            depth: this.depth
+            depth: this.depth,
+            colsFound: this.numOfFound
         });
     } else {
         postMessage({
@@ -97,7 +103,8 @@ function postInProgressResults(){
             combinationCIELAB: this.bestFoundComboCIELAB,
             deltaE_RGB: colorDifference(this.bestFoundRGB),
             deltaE_CIELAB: this.bestDifferenceCIELAB,
-            depth: this.depth
+            depth: this.depth,
+            colsFound: this.numOfFound
         });
     }
 }
@@ -114,6 +121,7 @@ function findFromBeacon(){
     if(this.glass.length > 0){
         query.push(this.glass[0].rgb);
         this.found[this.glass[0].dec] = [this.glass[0],-1];
+        this.numOfFound++;
         this.bestFoundRGB = this.glass[0].rgb;
         this.bestFoundRGBDec = rgbToDec(this.bestFoundRGB);
         this.bestFoundCIELAB = this.glass[0].rgb;
@@ -135,6 +143,7 @@ function findFromBeacon(){
     for(var g = 1; g < this.glass.length; g++){
         query.push(this.glass[g].rgb);
         this.found[this.glass[g].dec] = [this.glass[g],-1];
+        this.numOfFound++;
         updateBestDifference(this.glass[g].rgb);
     }
 
@@ -155,6 +164,7 @@ function findFromColor(startingRGB){
     }
     query.push(startingRGB);
     this.found[rgbToDec(startingRGB)] = [-1,-1];
+    this.numOfFound++;
     this.bestFoundRGB = startingRGB;
     this.bestFoundRGBDec = rgbToDec(this.bestFoundRGB);
     this.bestFoundCIELAB = startingRGB;
@@ -332,6 +342,7 @@ function breadthFirstSearch(query){
             var newDec = rgbToDec(newRGB);
             if(typeof this.found[newDec] === 'undefined'){
                 this.found[newDec] = [this.glass[g],query[q]];
+                this.numOfFound++;
                 newQuery.push(newRGB);
                 updateBestDifference(newRGB);
                 if(this.bestDifferenceRGB === 0){
